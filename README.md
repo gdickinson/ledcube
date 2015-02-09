@@ -31,6 +31,8 @@ If you'd like to write your own, the basic building blocks are in `libcube.c`.
 The idea is that you can draw an arbitrary three dimensional image based on a
 two-dimensional array. Supposing a 4x4x4 cube:
 
+    #include "libcube.h"
+
     int columnPins[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
     int layerPins[] = {16, 17, 18, 19};
     int pattern[4][16] = {
