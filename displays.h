@@ -19,8 +19,6 @@
 // SOFTWARE.
 #ifndef DISPLAYS
 #define DISPLAYS
-#define NUM_COLUMNS 16
-#define NUM_LAYERS 4
 #undef __BEGIN_DECLS
 #undef __END_DECLS
 #ifdef __cplusplus
@@ -34,6 +32,9 @@ __BEGIN_DECLS
 
 void layers(int* columnPins, int* layerPins, int duration);
 void columns(int* columnPins, int* layerPins, int duration);
+void snake(int* columnPins, int* layerPins, int duration);
+void sparkle(int* columnPins, int* layerPins, int duration);
+void rain(int* columnPins, int* layerPins, int duration);
 
 __END_DECLS
 #endif

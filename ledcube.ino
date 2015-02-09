@@ -30,5 +30,8 @@ void setup() {
 }
 
 void loop() {
-  columns(columnPins, layerPins, 10000);
+  rain(columnPins, layerPins, 5000);
+  // columns(columnPins, layerPins, 5000);
+  // snake(columnPins, layerPins, 10000);
+  // sparkle(columnPins, layerPins, 10000);
 }
