@@ -122,26 +122,41 @@ void sparkle(int* columnPins, int* layerPins, int duration) {
 
 void rain(int* columnPins, int* layerPins, int duration) {
   long endTime = millis() + duration;
-  int maxDrops = 2;
   int pattern[NUM_LAYERS][NUM_COLUMNS] = {
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
   };
-  reset_pattern(pattern);
-  int dropCol;
-  int layer = 0;
-  int dispTime = 125;
+  int dispTime = 500;
+  int maxDrops = 3;
+  int dropCount = 1;
+
   while(millis() < endTime) {
-    if (layer == NUM_LAYERS) {
-      dropCol = rand() % NUM_COLUMNS;
-      layer = 0;
-    }
-    reset_pattern(pattern);
-    pattern[layer][dropCol] = 1;
     cube_display(columnPins, layerPins, pattern, dispTime);
-    layer++;
-    // dispTime = dispTime - (layer + 10 * -1);
+    int i, j;
+    // Set the bottom layer to 0; those drops have fallen off
+    for (i = 0; i < NUM_COLUMNS; i++) {
+      dropCount = dropCount - pattern[NUM_LAYERS - 1][i];
+      pattern[NUM_LAYERS - 1][i] = 0;
+    }
+    // Advance the existing drops
+    for (i = NUM_LAYERS - 2; i >= 0; i--) {
+      for (j = 0; j < NUM_COLUMNS; j++) {
+        pattern[i+1][j] = pattern[i][j];
+        pattern[i][j] = 0;
+      }
+    }
+
+    if (dropCount < maxDrops) {
+      for (i = 0; i < maxDrops - dropCount; i++) {
+        int shouldDrop = rand() % 2;
+        int dropCol = rand() % NUM_COLUMNS;
+        if (shouldDrop && !pattern[0][dropCol]) {
+          pattern[0][dropCol] = 1;
+          dropCount++;
+        }
+      }
+    }
   }
 }
