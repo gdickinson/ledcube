@@ -17,43 +17,23 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+#ifndef DISPLAYS
+#define DISPLAYS
+#define NUM_COLUMNS 16
+#define NUM_LAYERS 4
+#undef __BEGIN_DECLS
+#undef __END_DECLS
+#ifdef __cplusplus
+#define __BEGIN_DECLS extern "C" {
+#define __END_DECLS }
+#else
+#define __BEGIN_DECLS
+#define __END_DECLS
+#endif
+__BEGIN_DECLS
 
-#include <Arduino.h>
-#include "libcube.h"
+void layers(int* columnPins, int* layerPins, int duration);
+void columns(int* columnPins, int* layerPins, int duration);
 
-void cube_init(int *cPins, int *lPins) {
-  int colPin, layerPin;
-  for (colPin = 0; colPin < NUM_COLUMNS; colPin++) {
-    pinMode(cPins[colPin], OUTPUT);
-  }
-  for (layerPin = 0; layerPin < NUM_LAYERS; layerPin++) {
-    pinMode(lPins[layerPin], OUTPUT);
-  }
-  cube_reset(cPins, lPins);
-}
-
-void cube_display(int* cPins, int* lPins, int pattern[NUM_LAYERS][NUM_COLUMNS], int duration) {
-  long startTime = millis();
-  long endTime = startTime + duration;
-
-  while(millis() < endTime) {
-    int layerPin;
-    int colPin;
-    for (layerPin = 0; layerPin < NUM_LAYERS; layerPin++) {
-      digitalWrite(lPins[layerPin], LOW);
-
-      for (colPin = 0; colPin < NUM_COLUMNS; colPin++){
-        digitalWrite(cPins[colPin], pattern[layerPin][colPin]);
-      }
-      delay(1);
-      digitalWrite(lPins[layerPin], HIGH);
-    }
-  }
-}
-
-void cube_reset(int* cPins, int* lPins) {
-  int i;
-  for (i = 0; i < NUM_LAYERS; i++) {
-    digitalWrite(lPins[i], LOW);
-  }
-}
+__END_DECLS
+#endif
