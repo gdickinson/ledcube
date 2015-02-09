@@ -44,5 +44,5 @@ int pattern[4][16] = {
 };
 
 // Display this pattern for ten seconds
-cube_display(columnPins, layerPins, pattern, 1000)
+cube_display(columnPins, layerPins, pattern, 1000);
 ```
