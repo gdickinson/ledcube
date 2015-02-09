@@ -1,6 +1,6 @@
 # About
 
-!(https://farm8.staticflickr.com/7414/16479314782_37389e6752.jpg)
+![An LED Cube.](https://farm8.staticflickr.com/7414/16479314782_37389e6752.jpg)
 
 There are more than a small handful of hardware examples of how to make a 4x4x4
 LED display cube, but for the most part, the software is a hacked-up afterthought.
