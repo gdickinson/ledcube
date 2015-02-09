@@ -25,9 +25,10 @@ int columnPins[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 int layerPins[] = {16, 17, 18, 19};
 
 void setup() {
+  Serial.begin(9600);
   cube_init(columnPins, layerPins);
 }
 
 void loop() {
-  layers(columnPins, layerPins, 10000);
+  columns(columnPins, layerPins, 10000);
 }
