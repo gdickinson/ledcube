@@ -21,6 +21,9 @@
 #include <Arduino.h>
 #include "libcube.h"
 
+/**
+ * Configure the LED Cube prior to use.
+ */
 void cube_init(int *cPins, int *lPins) {
   int colPin, layerPin;
   for (colPin = 0; colPin < NUM_COLUMNS; colPin++) {
@@ -32,6 +35,11 @@ void cube_init(int *cPins, int *lPins) {
   cube_reset(cPins, lPins);
 }
 
+/**
+ * Display the image represented by the 2D array `pattern` for `duration`
+ * milliseconds.
+ * This is accomplished by PWM'ing the digital output pins layer-by-layer.
+ */
 void cube_display(int* cPins, int* lPins, int pattern[NUM_LAYERS][NUM_COLUMNS], int duration) {
   long startTime = millis();
   long endTime = startTime + duration;
@@ -51,6 +59,9 @@ void cube_display(int* cPins, int* lPins, int pattern[NUM_LAYERS][NUM_COLUMNS], 
   }
 }
 
+/**
+ * Reset the cube by turning all the pins off.
+ */
 void cube_reset(int* cPins, int* lPins) {
   int i;
   for (i = 0; i < NUM_LAYERS; i++) {

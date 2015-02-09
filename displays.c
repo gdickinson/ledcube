@@ -31,6 +31,9 @@ void reset_pattern(int* pattern) {
   }
 }
 
+/**
+ * Cycle through each available layer from top to bottom, one at a time
+ */
 void layers(int* columnPins, int* layerPins, int duration) {
   int pattern[NUM_LAYERS][NUM_COLUMNS] = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -60,6 +63,9 @@ void layers(int* columnPins, int* layerPins, int duration) {
   }
 }
 
+/**
+ * Cycle through each column, one at a time.
+ */
 void columns(int* columnPins, int* layerPins, int duration) {
   long endTime = millis() + duration;
   int pattern[NUM_LAYERS][NUM_COLUMNS] = {
@@ -68,7 +74,6 @@ void columns(int* columnPins, int* layerPins, int duration) {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
   };
-
 
   int column = 0;
   while(millis() < endTime) {
@@ -87,6 +92,10 @@ void columns(int* columnPins, int* layerPins, int duration) {
   }
 }
 
+/**
+ * Turn on each LED, one at a time, and then turn them all back off, one at
+ * a time.
+ */
 void snake(int* columnPins, int* layerPins, int duration) {
   long endTime = millis() + duration;
   int pattern[NUM_LAYERS][NUM_COLUMNS] = {
@@ -107,6 +116,9 @@ void snake(int* columnPins, int* layerPins, int duration) {
   }
 }
 
+/**
+ * Show a random pattern, resetting quickly enough to look 'sparkly'.
+ */
 void sparkle(int* columnPins, int* layerPins, int duration) {
   long endTime = millis() + duration;
   int* pattern = alloca(NUM_COLUMNS * NUM_LAYERS * sizeof(int));
@@ -120,6 +132,10 @@ void sparkle(int* columnPins, int* layerPins, int duration) {
   }
 }
 
+/**
+ * A "rain" or ("Matrix", if you prefer) pattern, which drips lights down the
+ * grid.
+ */
 void rain(int* columnPins, int* layerPins, int duration) {
   long endTime = millis() + duration;
   int pattern[NUM_LAYERS][NUM_COLUMNS] = {
@@ -134,13 +150,16 @@ void rain(int* columnPins, int* layerPins, int duration) {
 
   while(millis() < endTime) {
     cube_display(columnPins, layerPins, pattern, dispTime);
+
     int i, j;
-    // Set the bottom layer to 0; those drops have fallen off
+    // Set the bottom layer to 0; those drops have fallen off. Decrement the
+    // counter of active drops.
     for (i = 0; i < NUM_COLUMNS; i++) {
       dropCount = dropCount - pattern[NUM_LAYERS - 1][i];
       pattern[NUM_LAYERS - 1][i] = 0;
     }
-    // Advance the existing drops
+
+    // Advance the other drops downward--those which haven't reached the bottom yet.
     for (i = NUM_LAYERS - 2; i >= 0; i--) {
       for (j = 0; j < NUM_COLUMNS; j++) {
         pattern[i+1][j] = pattern[i][j];
@@ -148,6 +167,9 @@ void rain(int* columnPins, int* layerPins, int duration) {
       }
     }
 
+    // Start new drops if we have fewer than maxDrops.
+    // We perturb this a little bit and only do this some of the time in order to keep the pattern
+    // random-looking.
     if (dropCount < maxDrops) {
       for (i = 0; i < maxDrops - dropCount; i++) {
         int shouldDrop = rand() % 2;
